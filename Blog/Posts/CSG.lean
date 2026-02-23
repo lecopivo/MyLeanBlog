@@ -1,35 +1,22 @@
 import VersoBlog
 import Blog.Categories
+import Blog.Meta
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 open Verso Genre Blog
 
+set_option linter.unusedVariables false
+
 #doc (Post) "Vibe coding with .lean instead of .md files" =>
 
-
-
 %%%
-authors := ["Tomas Skrivan"]
-date := {year := 2026, month := 2, day := 20}
+authors := ["Tomáš Skřivan"]
+date := {year := 2026, month := 2, day := 22}
 categories := []
 %%%
 
 ```leanInit post
 ```
-```leanInit post'
-```
-
-```lean post
-open EuclideanSpace Topology Metric NNReal
-notation "ℝ^" n => EuclideanSpace ℝ (Fin n)
-notation "ℝ≥0^" n => EuclideanSpace (ℝ≥0) (Fin n)
-notation "ℝ∞" => EReal
-instance : Coe (Set (ℝ^1)) (Set ℝ) := ⟨fun s x => s (.single 0 x)⟩
-noncomputable section
-open Classical
-variable {n : ℕ}
-```
-
 
 I'm a computer graphics programmer specializing in physics simulation and computational geometry. As a trained mathematician, I love the math, but I've always seen the coding part as a necessary evil. About five years ago, I discovered interactive proof assistants and realized they could transform how I write code: start from a precise mathematical formulation and interactively refine it into something executable. That idea became SciLean, a Lean 4 library I spent four years building. Unfortunatelly, the project is effectively dead now. It never gained meaningful traction, and I ran out of steam. It didn't address the problems Lean users actually had, and the likely target audience had little motivation to leave mature ecosystems like C++, Python, or Julia.
 
@@ -41,7 +28,7 @@ LLMs change the calculus here. The workflow I now have in mind looks like this:
 2. Transform that specification into a more detailed Lean spec or implementation, tied back to the original with proofs.
 3. Generate target-language code from the detailed specification.
 
-Step one captures what you actually want to implement, but at too coarse a level for AI to generate good code directly. Step two is where you inject engineering knowledge and real-world constraints. For examples, optimal implementation differ substantially between CPU, GPU, and distributed targets. You can think of the detailed specification as what you'd otherwise write in `.md` files to give AI a real chance of producing the code you want, but keeping it in Lean maintains a tight, verifiable connection to the top-level specification. The key payoff: when you modify or extend the top-level specification, Lean gives you deterministic feedback about whether those changes break anything downstream. Without it, you'd have to manually audit all your prose documentation.
+Step one captures what you actually want to implement, but at too coarse a level for AI to generate good code directly. Step two is where you inject engineering knowledge and real-world constraints. For examples, optimal implementation differ substantially between CPU, GPU, and distributed systems. You can think of the detailed specification as what you'd otherwise write in `.md` files to give AI a real chance of producing the code you want, but keeping it in Lean maintains a tight, verifiable connection to the top-level specification. The key payoff: when you modify or extend the top-level specification, Lean gives you deterministic feedback about whether those changes break anything downstream. Without it, you'd have to manually audit all your prose documentation.
 
 Recently at work I had to write a set of tools for signed distance functions. Their mathematics is clean and well-understood, which made this a natural first test of the workflow. This post documents that experiment.
 
@@ -77,14 +64,14 @@ A^c &= \{ x \mid -\phi_A(x) \le 0 \}
 \end{align*}
 `
 
-The tools I has to implement at work were roughly:
-  * around 15 basic shapes
-  * CSG operations
-  * fast evaluation at many locations
-  * bounds on SDFs over a region
-  * pruning of CSG expressions
-  * conversion to voxel representation
-  * derivatives with respect to space and shape parameters
+The tools I had to implement at work were roughly:
+  - around 15 basic shapes
+  - CSG operations
+  - fast evaluation at many locations
+  - bounds on SDFs over a region
+  - pruning of CSG expressions
+  - conversion to voxel representation
+  - derivatives with respect to space and shape parameters
 
 The math and algorithms are enjoyable; the implementation is the grind. That raised the question: can I write the specification in Lean and let AI generate the C code?
 
@@ -94,6 +81,19 @@ The math and algorithms are enjoyable; the implementation is the grind. That rai
 The goal is to vibe-code a C library for basic CSG operations. The process: write the pure mathematical specification in Lean, refine it until it can be translated to C by AI with minimal ambiguity.
 
 The formal definition of the SDF is a direct transcription of the mathematical one:
+
+:::hidethis
+```lean post
+open EuclideanSpace Topology Metric NNReal
+notation "ℝ^" n => EuclideanSpace ℝ (Fin n)
+notation "ℝ≥0^" n => EuclideanSpace (ℝ≥0) (Fin n)
+notation "ℝ∞" => EReal
+instance : Coe (Set (ℝ^1)) (Set ℝ) := ⟨fun s x => s (.single 0 x)⟩
+noncomputable section
+open Classical
+variable {n : ℕ}
+```
+:::
 
 ```lean post
 def sdf (s : Set (ℝ^n)) (x : ℝ^n) : ℝ :=
@@ -113,10 +113,9 @@ inductive BasicShape (n : ℕ) where
 
 At the C level this becomes a tagged union. We need an interpretation of `BasicShape` as `Set (ℝ^n)` and explicit SDF formulas. I asked AI to provide both:
 
-```
-❯ Please define BasicShape.toSet turning basic shape to Set (ℝ^n) and
-  BasicShape.sdf which provides an explicit formula for signed distance function.
-```
+
+❯ _Please define BasicShape.toSet turning basic shape to Set (ℝ^n) and BasicShape.sdf which provides an explicit formula for signed distance function._
+
 
 ```lean post
 protected def BasicShape.toSet : BasicShape n → Set (ℝ^n)
@@ -141,9 +140,9 @@ protected def BasicShape.sdf (x : ℝ^n) : BasicShape n → ℝ
 
 `BasicShape.toSet` looks right. `BasicShape.sdf` is already non-trivial, so we need a proof it agrees with `sdf`. I asked AI:
 
-```
-❯ Can you please state that `sdf` is equal to `BasicShape.sdf` and try to prove it.
-```
+❯ _Can you please state that `sdf` is equal to `BasicShape.sdf` and try to prove it._
+
+In hopes of producing this theorems:
 
 ```lean post
 theorem BasicShape.sdf_eq (s : BasicShape n) (x : ℝ^n) :
@@ -173,9 +172,8 @@ inductive CompoundShape (n : ℕ) where
 
 Because `min`/`max` don't exactly preserve distance, the CSG version of the SDF gets its own name, `csgSdf`:
 
-```
-❯ Please define `CompoundShape.toSet` and `CompoundShape.csgSdf` analogous to `BasicShape` functions. The `CompoundShape.csgSdf` is not a true SDF — it should turn union into `min` and intersection into `max`.
-```
+
+❯ _Please define `CompoundShape.toSet` and `CompoundShape.csgSdf` analogous to `BasicShape` functions. The `CompoundShape.csgSdf` is not a true SDF, it should turn union into `min` and intersection into `max`._
 
 ```lean post
 def CompoundShape.toSet : CompoundShape n → Set (ℝ^n)
@@ -193,7 +191,7 @@ def CompoundShape.csgSdf (x : ℝ^n) : CompoundShape n → ℝ
   | .intersect a b   => max (a.csgSdf x) (b.csgSdf x)
 ```
 
-The `WithLp.toLp 2` noise is an unfortunate artifact of how Mathlib wraps `ℝ^n`. The semantics are correct.
+The `WithLp.toLp 2` noise is an unfortunate artifact of how Mathlib works with `ℝ^n`. The semantics are correct.
 
 The key property we want is that `csgSdf` underestimates the true signed distance:
 
@@ -210,9 +208,8 @@ Aristotele found a [counterexample][proof2]: the intersection of two non-overlap
 
 With the specification in reasonable shape, I asked for C code:
 
-```
-❯ Can you please generate equivalent C code in a new `c` directory for n=3. `BasicShape` should be a C tagged union and `CompoundShape` should be represented as a flat array in reverse Polish notation. Ignore functions manipulating `Set (ℝ^n)`.
-```
+
+❯ _Can you please generate equivalent C code in a new `c` directory for n=3. `BasicShape` should be a C tagged union and `CompoundShape` should be represented as a flat array in reverse Polish notation. Ignore functions manipulating `Set (ℝ^n)`._
 
 I wanted a flat array rather than a heap-allocated tree so the representation could port cleanly to a GPU. The AI produced working, readable C ([csg.h][csgh], [csg.c][csgc]), but noted a subtlety I'd missed:
 
@@ -227,9 +224,7 @@ I wanted a flat array rather than a heap-allocated tree so the representation co
 
 Transforms require a separate point stack, postfix isn't quite sufficient. Before trusting the C code, I wanted this encoding verified in Lean itself:
 
-```
-❯ In LeanCSG/StackEval.lean, please define a flat representation of `CompoundShape n` evaluable by a stack machine, along with the equivalent of `CompoundShape.csgSdf`, all the constructors, and a proof that flattening then evaluating is equivalent to direct recursive evaluation.
-```
+❯ _In LeanCSG/StackEval.lean, please define a flat representation of `CompoundShape n` evaluable by a stack machine, along with the equivalent of `CompoundShape.csgSdf`, all the constructors, and a proof that flattening then evaluating is equivalent to direct recursive evaluation._
 
 The AI returned the key encoding of `CompoundShape` as `FlatShape`:
 
@@ -267,9 +262,7 @@ The one important gap is memory management, Lean doesn't express it, so the AI h
 
 I asked for a quick visual validation:
 
-```
-❯ Please write a simple program that visualizes the computed SDF as a slice through the XY plane. Negative values in blue (blue at zero, lighter as values decrease), positive in orange (red at zero, lighter as values increase). Use a test shape with a few transforms, unions, and intersections.
-```
+❯ _Please write a simple program that visualizes the computed SDF as a slice through the XY plane. Negative values in blue (blue at zero, lighter as values decrease), positive in orange (red at zero, lighter as values increase). Use a test shape with a few transforms, unions, and intersections._
 
 ![generated_sdf](static/imgs/sdf.png)
 
@@ -291,15 +284,19 @@ I defenitelly want to continue this experiment as it was a success in my view. H
 When evaluating `ComboundShape.csgSdf` for many points at a time we can propagate the loop over all points to the inner most part of the code. This corresponds to this Lean code:
 
 ```lean post
-def BasicShape.sdfBatch (xs : List (ℝ^n)) : BasicShape n → List ℝ
+def BasicShape.sdfBatch (xs : List (ℝ^n)) :
+    BasicShape n → List ℝ
   | .ball c r => xs.map (ball c r).sdf
-  | .box c s => xs.map (box c s).sdf
+  | .box c s  => xs.map (box c s).sdf
 
-def CompoundShape.csgSdfBatch (xs : List (ℝ^n)) : CompoundShape n → List ℝ
+def CompoundShape.csgSdfBatch (xs : List (ℝ^n)) :
+    CompoundShape n → List ℝ
   | .basic s         => s.sdfBatch xs
   | .transform s A t => xs.map (transform s A t).csgSdf
-  | .union a b       => xs.map (fun x => min (a.csgSdf x) (b.csgSdf x))
-  | .intersect a b   => xs.map (fun x => max (a.csgSdf x) (b.csgSdf x))
+  | .union a b =>
+    xs.map (fun x => min (a.csgSdf x) (b.csgSdf x))
+  | .intersect a b =>
+    xs.map (fun x => max (a.csgSdf x) (b.csgSdf x))
 ```
 
 When done correctly, the C compiler can vectorize the loop over the points achievnig 4~8x speedups. Conceptually, this is a very simple code transformation but very annoying to write as you have to write down most of your code in slightly different form.
@@ -340,7 +337,7 @@ That satisfies:
 theorem CompoundShape.pruneIn_eq
     (s : CompoundShape n) (region : BasicShape n) :
     ∀ x ∈ region.toSet,
-      (s.pruneIn r).csgSdf x = s.csgSdf x:= sorry
+      (s.pruneIn region).csgSdf x = s.csgSdf x:= sorry
 ```
 
 

@@ -196,6 +196,14 @@ block_component +directive greeter where
   cssFiles := #[("greeter.css", greeterCss)]
   jsFiles := #[("greeter.js", greeterJs)]
 
+
+block_component +directive hidethis where
+  toHtml id _data _goI goB contents := do
+    let _ ← contents.mapM goB
+    pure {{<div id={{id}}> </div>}}
+  cssFiles := #[]
+  jsFiles := #[]
+
 open Verso.Output
 
 instance [MonadLift m m'] [Monad m'] [MonadConfig m] : MonadConfig m' where
