@@ -1,0 +1,144 @@
+{"9":
+ "<code>Metric.sphere.{u} {α : Type u} [PseudoMetricSpace α] (x : α) (ε : ℝ) : Set α</code><span class=\"sep\"></span><code class=\"docstring\">`sphere x ε` is the set of all points `y` with `dist y x = ε` </code>",
+ "85":
+ "<code>Ring.{u} (R : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">A `Ring` is a `Semiring` with negation making it an additive group. </code>",
+ "84":
+ "<code>NumLean.Interfaces.Algebra.RingOps.{u} (K : Type u) : Type u</code>",
+ "83":
+ "<code>Dyadic : Type</code><span class=\"sep\"></span><code class=\"docstring\">A dyadic rational is either zero or of the form `n * 2^(-k)` for some (unique) `n k : Int`\nwhere `n` is odd.\n</code>",
+ "82":
+ "<code>NumLean.DyadicInterval (prec : Option ℤ := none) : Type</code><span class=\"sep\"></span><code class=\"docstring\">Dyadic interval with given precision i.e. all operations are rounded up to this many bits of precision. </code>",
+ "81": "<code>Type u_2</code>",
+ "80": "<code>Type u_1</code>",
+ "8":
+ "<code>toSphericalCoord (x : ↑(sphere 0 1)) : ℝ × ℝ</code><span class=\"sep\"></span><code class=\"docstring\">Convert point on a sphere `x : sphere (0 : ℝ^3) 1)` to its spherical coordinates `(θ, φ)`. </code>",
+ "79":
+ "<code>Matrix.mulVec.{v, u_2, u_3} {m : Type u_2} {n : Type u_3} {α : Type v} [NonUnitalNonAssocSemiring α] [Fintype n]\n  (M : Matrix m n α) (v : n → α) : m → α</code><span class=\"sep\"></span><code class=\"docstring\">`M *ᵥ v` (notation for `mulVec M v`) is the matrix-vector product of matrix `M` and vector `v`,\nwhere `v` is seen as a column vector.\n\nThe notation has precedence 73, which comes immediately before ` ⬝ᵥ ` for `dotProduct`,\nso that `A *ᵥ v ⬝ᵥ B *ᵥ w` is parsed as `(A *ᵥ v) ⬝ᵥ (B *ᵥ w)`.\n</code>",
+ "78": "<code>R^[m]</code>",
+ "77": "<code>R^[m, n]</code>",
+ "76":
+ "<code>euclidean_equiv {R : Type} {Rs : ℕ → Type} [RealModelOps R Rs] {m n : ℕ} [LawfulRealModel R] (A : R^[m, n]) (x : R^[n])\n  (y : R^[m]) :\n  (euclideanEquiv (y + A *ᵥ x)).ofLp = (euclideanEquiv y).ofLp + (matrixEquiv A).mulVec (euclideanEquiv x).ofLp</code>",
+ "75":
+ "<code>Matrix.{u, u', v} (m : Type u) (n : Type u') (α : Type v) : Type (max u u' v)</code><span class=\"sep\"></span><code class=\"docstring\">`Matrix m n R` is the type of matrices with entries in `R`, whose rows are indexed by `m`\nand whose columns are indexed by `n`. </code>",
+ "74":
+ "<code>matrixEquiv {R : Type} {Rs : ℕ → Type} [RealModelOps R Rs] {m n : ℕ} [LawfulRealModel R] :\n  R^[m, n] ≃ₗ[R] Matrix (Fin m) (Fin n) R</code>",
+ "73":
+ "<code class=\"docstring\">The `sorry` term is a temporary placeholder for a missing proof or value.\n\nThe syntax is intended for stubbing-out incomplete parts of a value or proof while still having a syntactically correct skeleton.\nLean will give a warning whenever a declaration uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a declaration depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n\n\"Go to definition\" on `sorry` in the Infoview will go to the source position where it was introduced, if such information is available.\n\nEach `sorry` is guaranteed to be unique, so for example the following fails:\n```lean\nexample : (sorry : Nat) = sorry := rfl -- fails\n```\n\nSee also the `sorry` tactic, which is short for `exact sorry`.\n</code>",
+ "72":
+ "<code>euclideanEquiv {R : Type} {Rs : ℕ → Type} [RealModelOps R Rs] {n : ℕ} [LawfulRealModel R] :\n  R^[n] ≃ₗᵢ[R] EuclideanSpace R (Fin n)</code>",
+ "71": "<code>LawfulRealModel R</code>",
+ "70": "<code>RealModelOps R Rs</code>",
+ "7":
+ "<code>Prod.{u, v} (α : Type u) (β : Type v) : Type (max u v)</code><span class=\"sep\"></span><code class=\"docstring\">The product type, usually written `α × β`. Product types are also called pair or tuple types.\nElements of this type are pairs in which the first element is an `α` and the second element is a\n`β`.\n\nProducts nest to the right, so `(x, y, z) : α × β × γ` is equivalent to `(x, (y, z)) : α × (β × γ)`.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `×` in identifiers is `Prod`.</code>",
+ "69":
+ "<code>IsLinearMap.{u, v, w} (R : Type u) {M : Type v} {M₂ : Type w} [Semiring R] [AddCommMonoid M] [AddCommMonoid M₂]\n  [Module R M] [Module R M₂] (f : M → M₂) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A map `f` between modules over a semiring is linear if it satisfies the two properties\n`f (x + y) = f x + f y` and `f (c • x) = c • f x`. The predicate `IsLinearMap R f` asserts this\nproperty. A bundled version is available with `LinearMap`, and should be favored over\n`IsLinearMap` most of the time. </code>",
+ "68":
+ "<code>lin {R : Type} {Rs : ℕ → Type} [RealModelOps R Rs] {n : ℕ} [LawfulRealModel R] (normal : R^[n]) :\n  IsLinearMap R fun x =&gt; reflect normal x</code>",
+ "67":
+ "<code class=\"docstring\">The universe of propositions. `Prop ≡ Sort 0`.\n\nEvery proposition is propositionally equal to either `True` or `False`. </code>",
+ "66":
+ "<code>NumLean.LawfulRealModel (R : semiOutParam Type) {Rs : outParam (ℕ → Type)} [RealModelOps R Rs] : Type</code>",
+ "65":
+ "<code class=\"docstring\">The `sorry` tactic is a temporary placeholder for an incomplete tactic proof,\nclosing the main goal using `exact sorry`.\n\nThis is intended for stubbing-out incomplete parts of a proof while still having a syntactically correct proof skeleton.\nLean will give a warning whenever a proof uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a theorem depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n</code>",
+ "64":
+ "<code>HSMul.hSMul.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HSMul α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a • b` computes the product of `a` and `b`.\nThe meaning of this notation is type-dependent, but it is intended to be used for left actions. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `•` in identifiers is `smul`.</code>",
+ "63":
+ "<code>HMul.hMul.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HMul α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a * b` computes the product of `a` and `b`.\nThe meaning of this notation is type-dependent. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `*` in identifiers is `mul`.</code>",
+ "62":
+ "<code>HSub.hSub.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : HSub α β γ] : α → β → γ</code><span class=\"sep\"></span><code class=\"docstring\">`a - b` computes the difference of `a` and `b`.\nThe meaning of this notation is type-dependent.\n* For natural numbers, this operator saturates at 0: `a - b = 0` when `a ≤ b`. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `-` in identifiers is `sub` (when used as a binary operator).</code>",
+ "61":
+ "<code class=\"docstring\">* `unfold id` unfolds all occurrences of definition `id` in the target.\n* `unfold id1 id2 ...` is equivalent to `unfold id1; unfold id2; ...`.\n* `unfold id at h` unfolds at the hypothesis `h`.\n\nDefinitions can be either global or local definitions.\n\nFor non-recursive global definitions, this tactic is identical to `delta`.\nFor recursive global definitions, it uses the \"unfolding lemma\" `id.eq_def`,\nwhich is generated for each recursive definition, to unfold according to the recursive definition given by the user.\nOnly one level of unfolding is performed, in contrast to `simp only [id]`, which unfolds definition `id` recursively.\n</code>",
+ "60":
+ "<code class=\"docstring\">`by tac` constructs a term of the expected type by running the tactic(s) `tac`. </code>",
+ "6":
+ "<code>NumLean.Tensor.{u, v, u_1, u_2} (X : Type u) (I : Type v) {Ks : ℕ → Type u_1} {K : Type u_2} {nX nI : ℕ}\n  [VectorType Ks K] [HasDefaultFlatRepr X Ks nX] [IndexType I nI] : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">A length-indexed tensor storing one `X` value for every index in `I`.\n\nThe underlying vector stores scalar components, so its scalar length is `nI * nX`, where `nI`\nis the cardinality of the index type and `nX` is the flat scalar width of each `X`. </code>",
+ "59":
+ "<code>Continuous.{u, v} {X : Type u} {Y : Type v} [TopologicalSpace X] [TopologicalSpace Y] (f : X → Y) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A function between topological spaces is continuous if the preimage\nof every open set is open. Registered as a structure to make sure it is not unfolded by Lean. </code>",
+ "58": "<code>ℝ^[n]</code>",
+ "57":
+ "<code>cont {n : ℕ} (normal : ℝ^[n]) : Continuous fun x =&gt; reflect normal x</code>",
+ "56": "<code>R</code>",
+ "55":
+ "<code>reflect {R : Type} {Rs : ℕ → Type} [RealModelOps R Rs] {n : ℕ} (normal x : R^[n]) : R^[n]</code>",
+ "54": "<code>R^[n]</code>",
+ "53":
+ "<code>EuclideanSpace.{u_7, u_8} (𝕜 : Type u_7) (n : Type u_8) : Type (max u_7 u_8)</code><span class=\"sep\"></span><code class=\"docstring\">The standard real/complex Euclidean space, functions on a finite type. For an `n`-dimensional\nspace use `EuclideanSpace 𝕜 (Fin n)`.\n\nFor the case when `n = Fin _`, there is `!₂[x, y, ...]` notation for building elements of this type,\nanalogous to `![x, y, ...]` notation. </code>",
+ "52": "<code>NumLean.Float64Vector (n : ℕ) : Type</code>",
+ "51": "<code>NumLean.Float64 : Type</code>",
+ "50":
+ "<code>Vector.{u} (α : Type u) (n : ℕ) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">`Vector α n` is an `Array α` with size `n`. </code>",
+ "5":
+ "<code>interpolate {nθ nφ : ℕ} {R : Type} {Rs : ℕ → Type} [RealModelOps R Rs] (data : R^[nθ, nφ]) (x : R × R) : R</code><span class=\"sep\"></span><code class=\"docstring\">Interpolate data on grid `(0, 0)...(nθ, nφ)` for `x ∈ [0, π) × [0, 2*π)`. </code>",
+ "49":
+ "<code>Array.{u} (α : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">`Array α` is the type of [dynamic arrays](https://en.wikipedia.org/wiki/Dynamic_array) with elements\nfrom `α`. This type has special support in the runtime.\n\nArrays perform best when unshared. As long as there is never more than one reference to an array,\nall updates will be performed _destructively_. This results in performance comparable to mutable\narrays in imperative programming languages.\n\nAn array has a size and a capacity. The size is the number of elements present in the array, while\nthe capacity is the amount of memory currently allocated for elements. The size is accessible via\n`Array.size`, but the capacity is not observable from Lean code. `Array.emptyWithCapacity n` creates\nan array which is equal to `#[]`, but internally allocates an array of capacity `n`. When the size\nexceeds the capacity, allocation is required to grow the array.\n\nFrom the point of view of proofs, `Array α` is just a wrapper around `List α`.\n</code>",
+ "48":
+ "<code>List.{u} (α : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">Linked lists: ordered lists, in which each element has a reference to the next element.\n\nMost operations on linked lists take time proportional to the length of the list, because each\nelement must be traversed to find the next element.\n\n`List α` is isomorphic to `Array α`, but they are useful for different things:\n* `List α` is easier for reasoning, and `Array α` is modeled as a wrapper around `List α`.\n* `List α` works well as a persistent data structure, when many copies of the tail are shared. When\n  the value is not shared, `Array α` will have better performance because it can do destructive\n  updates.\n</code>",
+ "47":
+ "<code>NumLean.RealModelOps (R : Type) (Rs : outParam (ℕ → Type)) : Type</code>",
+ "46":
+ "<code>Nat : Type</code><span class=\"sep\"></span><code class=\"docstring\">The natural numbers, starting at zero.\n\nThis type is special-cased by both the kernel and the compiler, and overridden with an efficient\nimplementation. Both use a fast arbitrary-precision arithmetic library (usually\n[GMP](https://gmplib.org/)); at runtime, `Nat` values that are sufficiently small are unboxed.\n</code>",
+ "45": "<code>ℕ → Type</code>",
+ "44":
+ "<code class=\"docstring\">A type universe. `Type ≡ Type 0`, `Type u ≡ Sort (u + 1)`. </code>",
+ "43":
+ "<code class=\"docstring\">Declares one or more typed variables, or modifies whether already-declared variables are\n  implicit.\n\nIntroduces variables that can be used in definitions within the same `namespace` or `section` block.\nWhen a definition mentions a variable, Lean will add it as an argument of the definition. This is\nuseful in particular when writing many definitions that have parameters in common (see below for an\nexample).\n\nVariable declarations have the same flexibility as regular function parameters. In particular they\ncan be [explicit, implicit][binder docs], or [instance implicit][tpil classes] (in which case they\ncan be anonymous). This can be changed, for instance one can turn explicit variable `x` into an\nimplicit one with `variable {x}`. Note that currently, you should avoid changing how variables are\nbound and declare new variables at the same time; see [issue 2789] for more on this topic.\n\nIn *theorem bodies* (i.e. proofs), variables are not included based on usage in order to ensure that\nchanges to the proof cannot change the statement of the overall theorem. Instead, variables are only\navailable to the proof if they have been mentioned in the theorem header or in an `include` command\nor are instance implicit and depend only on such variables.\n\nSee [*Variables and Sections* from Theorem Proving in Lean][tpil vars] for a more detailed\ndiscussion.\n\n[tpil vars]:\nhttps://lean-lang.org/theorem_proving_in_lean4/dependent_type_theory.html#variables-and-sections\n(Variables and Sections on Theorem Proving in Lean) [tpil classes]:\nhttps://lean-lang.org/theorem_proving_in_lean4/type_classes.html (Type classes on Theorem Proving in\nLean) [binder docs]:\nhttps://leanprover-community.github.io/mathlib4_docs/Lean/Expr.html#Lean.BinderInfo (Documentation\nfor the BinderInfo type) [issue 2789]: https://github.com/leanprover/lean4/issues/2789 (Issue 2789\non github)\n\n## Examples\n\n```lean\nsection\n  variable\n    {α : Type u}      -- implicit\n    (a : α)           -- explicit\n    [instBEq : BEq α] -- instance implicit, named\n    [Hashable α]      -- instance implicit, anonymous\n\n  def isEqual (b : α) : Bool :=\n    a == b\n\n  #check isEqual\n  -- isEqual.{u} {α : Type u} (a : α) [instBEq : BEq α] (b : α) : Bool\n\n  variable\n    {a} -- `a` is implicit now\n\n  def eqComm {b : α} := a == b ↔ b == a\n\n  #check eqComm\n  -- eqComm.{u} {α : Type u} {a : α} [instBEq : BEq α] {b : α} : Prop\nend\n```\n\nThe following shows a typical use of `variable` to factor out definition arguments:\n\n```lean\nvariable (Src : Type)\n\nstructure Logger where\n  trace : List (Src × String)\n#check Logger\n-- Logger (Src : Type) : Type\n\nnamespace Logger\n  -- switch `Src : Type` to be implicit until the `end Logger`\n  variable {Src}\n\n  def empty : Logger Src where\n    trace := []\n  #check empty\n  -- Logger.empty {Src : Type} : Logger Src\n\n  variable (log : Logger Src)\n\n  def len :=\n    log.trace.length\n  #check len\n  -- Logger.len {Src : Type} (log : Logger Src) : Nat\n\n  variable (src : Src) [BEq Src]\n\n  -- at this point all of `log`, `src`, `Src` and the `BEq` instance can all become arguments\n\n  def filterSrc :=\n    log.trace.filterMap\n      fun (src', str') =&gt; if src' == src then some str' else none\n  #check filterSrc\n  -- Logger.filterSrc {Src : Type} (log : Logger Src) (src : Src) [inst✝ : BEq Src] : List String\n\n  def lenSrc :=\n    log.filterSrc src |&gt;.length\n  #check lenSrc\n  -- Logger.lenSrc {Src : Type} (log : Logger Src) (src : Src) [inst✝ : BEq Src] : Nat\nend Logger\n```\n\nThe following example demonstrates availability of variables in proofs:\n```lean\nvariable\n  {α : Type}    -- available in the proof as indirectly mentioned through `a`\n  [ToString α]  -- available in the proof as `α` is included\n  (a : α)       -- available in the proof as mentioned in the header\n  {β : Type}    -- not available in the proof\n  [ToString β]  -- not available in the proof\n\ntheorem ex : a = a := rfl\n```\nAfter elaboration of the proof, the following warning will be generated to highlight the unused\nhypothesis:\n```\nincluded section variable '[ToString α]' is not used in 'ex', consider excluding it\n```\nIn such cases, the offending variable declaration should be moved down or into a section so that\nonly theorems that do depend on it follow it until the end of the section.\n</code>",
+ "42":
+ "<code>NumLean.VMul.vmul.{u, v, w} {α : Type u} {β : Type v} {γ : outParam (Type w)} [self : VMul α β γ] : α → β → γ</code>",
+ "41": "<code>HTuple ℕ hp(•)</code>",
+ "40":
+ "<code class=\"docstring\">Tuple notation for homogeneous hierarchical tuples.\n\nEach argument becomes a leaf, comma-separated arguments become right-associated products, and\nsyntactic nested tuples are decomposed recursively. </code>",
+ "4":
+ "<code>Fin (n : ℕ) : Type</code><span class=\"sep\"></span><code class=\"docstring\">Natural numbers less than some upper bound.\n\nIn particular, a `Fin n` is a natural number `i` with the constraint that `i &lt; n`. It is the\ncanonical type with `n` elements.\n</code>",
+ "39":
+ "<code>NumLean.HTuple.prod.{u} {α : Type u} {left right : HTuple.Profile} (fst : HTuple α left) (snd : HTuple α right) :\n  HTuple α (left.prod right)</code>",
+ "38":
+ "<code>NumLean.Tensor.reshape.{u, v, u_1, u_2} {X : Type u} {I : Type v} {Ks : ℕ → Type u_1} {K : Type u_2} {nX nI : ℕ}\n  [VectorType Ks K] [HasDefaultFlatRepr X Ks nX] [IndexType I nI] {nJ : ℕ} {r : Tensor.Rank} (x : X^[I])\n  (shape : Tensor.Shape r) {J : Type} [Tensor.IndexTypeOfShape shape J] [IndexType J nJ]\n  (matching_size : nI = nJ := by valid_reshape_tactic) : X^[J]</code><span class=\"sep\"></span><code class=\"docstring\">Reshape tensor given `shape : Shape r` which is usually given as `h(n₁, ..., nᵣ)` where\n`n₁, ..., nᵣ` are the dimension sizes of the new shape.\n\nExamples:\n  - `x.reshape h(3,5) : Float^[3,5]` for `x : Float^[15]`\n  - `A.reshape h(12) : Float^[12]` for `A : Float^[4,3]`\n  - `A.reshape h(3,2,2) : Float^[3,2,2]` for `A : Float^[4,3]`\n  - `y.reshape h(m + 1, n) : Float^[m + 1, n]` for `y : Float^[m * n + n]`\n\nThis function requires a proof `matching_size` that the new shape has the same number of elements\nas the old shape.\n</code>",
+ "37":
+ "<code>NumLean.FinHTupleMap.pair {p q : HTuple.Profile} {src : HTuple ℕ p} {dst : HTuple ℕ q} {p' q' : HTuple.Profile}\n  {src' : HTuple ℕ p'} {dst' : HTuple ℕ q'} (f : FinHTupleMap src dst) (g : FinHTupleMap src' dst') :\n  FinHTupleMap (src.prod src') (dst.prod dst')</code><span class=\"sep\"></span><code class=\"docstring\">Pair two bounded affine maps with independent sources. </code>",
+ "36":
+ "<code>NumLean.Tensor.InjectiveView.{u, v, w, u_1, u_2} (X : Type u) (J : Type v) (I : Type w) {Ks : ℕ → Type u_1}\n  {K : Type u_2} {nX : ℕ} [VectorType Ks K] [HasDefaultFlatRepr X Ks nX] {nJ : ℕ} {jrank : Tensor.Rank}\n  {jshape : HTuple ℕ jrank} [TensorIndexType J nJ jrank jshape] {nI : ℕ} {irank : Tensor.Rank} {ishape : HTuple ℕ irank}\n  [TensorIndexType I nI irank ishape] : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">Injective `J` shaped view into `Tensor X I`.\n\nInjectiveView is required when we want to mutate the underlining data. Injectivity\nof the view map `J → I` guarantees us that the every `j : J` corresponds to only a single `data[i]`\nthus avoiding any ambiguity if that wans't the case. </code>",
+ "35":
+ "<code>NumLean.Tensor.View.toInjective.{u_1, u_2, u_3} {R : Type} {Rs : ℕ → Type} [VectorType Rs R] {X : Type u_1} {nX : ℕ}\n  [HasDefaultFlatRepr X Rs nX] {I : Type u_2} {nI : ℕ} {irank : Tensor.Rank} {ishape : HTuple ℕ irank}\n  [TensorIndexType I nI irank ishape] {J : Type u_3} {nJ : ℕ} {jrank : Tensor.Rank} {jshape : HTuple ℕ jrank}\n  [TensorIndexType J nJ jrank jshape] (x : Tensor.View X J I) (h : FinHTupleMap.Injective x.layout) :\n  Tensor.InjectiveView X J I</code>",
+ "34":
+ "<code>NumLean.FinHTupleMap.contiguous1D {len n : ℕ} (off : ℕ) (h : off + len ≤ n) : FinHTupleMap (h(len)) (h(n))</code><span class=\"sep\"></span><code class=\"docstring\">Rank-1 contiguous map `i ↦ off + i`. </code>",
+ "33":
+ "<code>NumLean.Tensor.mkView.{u_1, u_2} {R : Type} {Rs : ℕ → Type} [VectorType Rs R] {X : Type u_1} {nX : ℕ}\n  [HasDefaultFlatRepr X Rs nX] {I : Type u_2} {nI : ℕ} {irank : Tensor.Rank} {ishape : HTuple ℕ irank}\n  [TensorIndexType I nI irank ishape] {nJ : ℕ} (x : X^[I]) {r : Tensor.Rank} {shape : Tensor.Shape r}\n  (layout : Tensor.Layout shape ishape) {J : Type} [Tensor.IndexTypeOfShape shape J] [TensorIndexType J nJ r shape] :\n  Tensor.View X J I</code>",
+ "32":
+ "<code>Prod.mk.{u, v} {α : Type u} {β : Type v} (fst : α) (snd : β) : α × β</code><span class=\"sep\"></span><code class=\"docstring\">Constructs a pair. This is usually written `(x, y)` instead of `Prod.mk x y`.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `(a, b)` in identifiers is `mk`.</code>",
+ "31":
+ "<code>GetElem.getElem.{u, v, w} {coll : Type u} {idx : Type v} {elem : outParam (Type w)}\n  {valid : outParam (coll → idx → Prop)} [self : GetElem coll idx elem valid] (xs : coll) (i : idx) (h : valid xs i) :\n  elem</code><span class=\"sep\"></span><code class=\"docstring\">The syntax `arr[i]` gets the `i`'th element of the collection `arr`. If there\nare proof side conditions to the application, they will be automatically\ninferred by the `get_elem_tactic` tactic.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `xs[i]` in identifiers is `getElem`.\n\n * The recommended spelling of `xs[i]'h` in identifiers is `getElem`.</code>",
+ "30":
+ "<code class=\"docstring\">`if c then t else e` is notation for `ite c t e`, \"if-then-else\", which decides to\nreturn `t` or `e` depending on whether `c` is true or false. The explicit argument\n`c : Prop` does not have any actual computational content, but there is an additional\n`[Decidable c]` argument synthesized by typeclass inference which actually\ndetermines how to evaluate `c` to true or false. Write `if h : c then t else e`\ninstead for a \"dependent if-then-else\" `dite`, which allows `t`/`e` to use the fact\nthat `c` is true/false.\n</code>",
+ "3":
+ "<code>NumLean.Tensor.dot.{u, v} {X : Type u} {I : Type v} {Rs : ℕ → Type} {R : Type} {nI : ℕ} [VectorType Rs R]\n  [HasDefaultFlatRepr X Rs 1] [IndexType I nI] [RingOps R] [TensorRingOps Rs R] (x y : X^[I]) : R</code>",
+ "29":
+ "<code>And (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`And a b`, or `a ∧ b`, is the conjunction of propositions. It can be\nconstructed and destructed like a pair: if `ha : a` and `hb : b` then\n`⟨ha, hb⟩ : a ∧ b`, and if `h : a ∧ b` then `h.left : a` and `h.right : b`.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∧` in identifiers is `and`.</code>",
+ "28":
+ "<code>Eq.{u_1} {α : Sort u_1} : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The equality relation. It has one introduction rule, `Eq.refl`.\nWe use `a = b` as notation for `Eq a b`.\nA fundamental property of equality is that it is an equivalence relation.\n```\nvariable (α : Type) (a b c d : α)\nvariable (hab : a = b) (hcb : c = b) (hcd : c = d)\n\nexample : a = d :=\n  Eq.trans (Eq.trans hab (Eq.symm hcb)) hcd\n```\nEquality is much more than an equivalence relation, however. It has the important property that every assertion\nrespects the equivalence, in the sense that we can substitute equal expressions without changing the truth value.\nThat is, given `h1 : a = b` and `h2 : p a`, we can construct a proof for `p b` using substitution: `Eq.subst h1 h2`.\nExample:\n```\nexample (α : Type) (a b : α) (p : α → Prop)\n        (h1 : a = b) (h2 : p a) : p b :=\n  Eq.subst h1 h2\n\nexample (α : Type) (a b : α) (p : α → Prop)\n    (h1 : a = b) (h2 : p a) : p b :=\n  h1 ▸ h2\n```\nThe triangle in the second presentation is a macro built on top of `Eq.subst` and `Eq.symm`, and you can enter it by typing `\\t`.\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `=` in identifiers is `eq`.</code>",
+ "27":
+ "<code>ite.{u} {α : Sort u} (c : Prop) [h : Decidable c] (t e : α) : α</code><span class=\"sep\"></span><code class=\"docstring\">`if c then t else e` is notation for `ite c t e`, \"if-then-else\", which decides to\nreturn `t` or `e` depending on whether `c` is true or false. The explicit argument\n`c : Prop` does not have any actual computational content, but there is an additional\n`[Decidable c]` argument synthesized by typeclass inference which actually\ndetermines how to evaluate `c` to true or false. Write `if h : c then t else e`\ninstead for a \"dependent if-then-else\" `dite`, which allows `t`/`e` to use the fact\nthat `c` is true/false.\n</code>",
+ "26": "<code>Fin 5</code>",
+ "25": "<code>Fin 10</code>",
+ "24":
+ "<code>NumLean.Tensor.ofFn.{u, v, u_1} {X : Type u} {I : Type v} {Ks : ℕ → Type} {K : Type u_1} {nX nI : ℕ} [VectorType Ks K]\n  [HasDefaultFlatRepr X Ks nX] [IndexType I nI] [Inhabited X] (f : I → X) : X^[I]</code>",
+ "23": "<code>Float</code>",
+ "22":
+ "<code>Float : Type</code><span class=\"sep\"></span><code class=\"docstring\">64-bit floating-point numbers.\n\n`Float` corresponds to the IEEE 754 *binary64* format (`double` in C or `f64` in Rust).\nFloating-point numbers are a finite representation of a subset of the real numbers, extended with\nextra “sentinel” values that represent undefined and infinite results as well as separate positive\nand negative zeroes. Arithmetic on floating-point numbers approximates the corresponding operations\non the real numbers by rounding the results to numbers that are representable, propagating error and\ninfinite values.\n\nFloating-point numbers include [subnormal numbers](https://en.wikipedia.org/wiki/Subnormal_number).\nTheir special values are:\n * `NaN`, which denotes a class of “not a number” values that result from operations such as\n   dividing zero by zero, and\n * `Inf` and `-Inf`, which represent positive and infinities that result from dividing non-zero\n   values by zero.\n</code>",
+ "21": "<code>M {nθ nφ : ℕ} : ℝ ^[[nθ, nφ], [nθ, nφ]]</code>",
+ "20": "<code>ℝ ^[[nθ, nφ], [nθ, nφ]]</code>",
+ "2": "<code>R^[nθ, nφ]</code>",
+ "19": "<code>omitted.{u_1} {α : Sort u_1} : α</code>",
+ "18":
+ "<code>basis (dims : ℕ × ℕ) (ij : Fin dims.1 × Fin dims.2) : ℝ ^[dims.1, dims.2]</code>",
+ "17": "<code>Fin nφ</code>",
+ "16": "<code>Fin nθ</code>",
+ "15": "<code>ℝ ^[nθ, nφ]</code>",
+ "14": "<code>↑(sphere 0 1)</code>",
+ "13":
+ "<code>inner_in_basis {nθ nφ : ℕ} (xs ys : ℝ ^[nθ, nφ]) :\n  ∫ (x : ↑(sphere 0 1)), interpolate xs (toSphericalCoord x) * interpolate ys (toSphericalCoord x) ∂omitted =\n    ∑ x ∈ Finset.univ ×ˢ Finset.univ ×ˢ Finset.univ ×ˢ Finset.univ,\n      match x with\n      | (i, i', j, j') =&gt;\n        xs[(↑i, ↑j)] * ys[(↑i', ↑j')] *\n          ∫ (x : ↑(sphere 0 1)),\n            interpolate (basis (nθ, nφ) (i, j)) (toSphericalCoord x) *\n              interpolate (basis (nθ, nφ) (i', j')) (toSphericalCoord x) ∂omitted</code>",
+ "12": "<code>ℝ</code>",
+ "11": "<code>EuclideanSpace ℝ (Fin 3)</code>",
+ "10":
+ "<code>Real : Type</code><span class=\"sep\"></span><code class=\"docstring\">The type `ℝ` of real numbers constructed as equivalence classes of Cauchy sequences of rational\nnumbers. </code>",
+ "1": "<code>ℕ</code>",
+ "0": "<code>Type</code>"}
