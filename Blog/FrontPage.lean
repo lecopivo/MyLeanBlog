@@ -9,6 +9,6 @@ import Blog.Meta
 
 open Verso Genre Blog
 
-#doc (Page) "Exploring Math" =>
+#doc (Page) "Blog" =>
 
-Hello everyone!
+This blog has moved to the [post archive](blog/).

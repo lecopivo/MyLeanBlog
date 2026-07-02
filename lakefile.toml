@@ -5,7 +5,7 @@ defaultTargets = ["Blog", "generate-blog"]
 [[require]]
 name = "verso"
 git = "https://github.com/leanprover/verso.git"
-rev = "v4.27.0"
+rev = "v4.30.0"
 
 # The content of the blog is in this Lean library
 [[lean_lib]]
@@ -20,4 +20,9 @@ root = "Main"
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.27.0"
+rev = "v4.30.0"
+
+[[require]]
+name = "NumLean"
+git = "https://github.com/lecopivo/NumLean"
+rev = "master"

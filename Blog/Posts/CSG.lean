@@ -15,10 +15,10 @@ date := {year := 2026, month := 2, day := 22}
 categories := []
 %%%
 
+I'm a computer graphics programmer specializing in physics simulation and computational geometry. As a trained mathematician, I love the math, but I've always seen the coding part as a necessary evil. About five years ago, I discovered interactive proof assistants and realized they could transform how I write code: start from a precise mathematical formulation and interactively refine it into something executable. That idea became SciLean, a Lean 4 library I spent four years building. Unfortunatelly, the project is effectively dead now. It never gained meaningful traction, and I ran out of steam. It didn't address the problems Lean users actually had, and the likely target audience had little motivation to leave mature ecosystems like C++, Python, or Julia.
+
 ```leanInit post
 ```
-
-I'm a computer graphics programmer specializing in physics simulation and computational geometry. As a trained mathematician, I love the math, but I've always seen the coding part as a necessary evil. About five years ago, I discovered interactive proof assistants and realized they could transform how I write code: start from a precise mathematical formulation and interactively refine it into something executable. That idea became SciLean, a Lean 4 library I spent four years building. Unfortunatelly, the project is effectively dead now. It never gained meaningful traction, and I ran out of steam. It didn't address the problems Lean users actually had, and the likely target audience had little motivation to leave mature ecosystems like C++, Python, or Julia.
 
 The core idea, writing mathematical specification and deriving code from it, still strikes me as sound and worth pursuing. What was fundamentally flawed was SciLean's approach of providing a fixed set of transformation rules. The design space is too large, and implementing a practically useful subset is nearly impossible.
 

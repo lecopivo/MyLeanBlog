@@ -167,6 +167,103 @@ function initGreeter() {
 }
 "#
 
+def lightboxImageCss : String :=
+r#"
+.lightbox-image {
+  margin: 1.25rem auto;
+  text-align: center;
+}
+
+.lightbox-image .lightbox-thumb {
+  display: inline-block;
+  cursor: zoom-in;
+  text-decoration: none;
+}
+
+.lightbox-image .lightbox-toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.lightbox-image .lightbox-thumb img {
+  display: block;
+  width: min(100%, var(--lightbox-thumb-width, 420px));
+  max-height: 320px;
+  object-fit: contain;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.lightbox-image .lightbox-caption {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lightbox-image .lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.78);
+  cursor: zoom-out;
+}
+
+.lightbox-image .lightbox-toggle:checked ~ .lightbox-overlay {
+  display: flex;
+}
+
+.lightbox-image .lightbox-overlay img {
+  max-width: min(96vw, 1400px);
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  cursor: default;
+}
+
+.lightbox-image .lightbox-close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  font-size: 1.75rem;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lightbox-image .lightbox-close:hover {
+  color: #fff;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 600px) {
+  .lightbox-image .lightbox-thumb img {
+    max-height: 240px;
+  }
+
+  .lightbox-image .lightbox-overlay {
+    padding: 1rem;
+  }
+}
+"#
+
 /--
 Displays an animated greeter for the front page of the blog.
 -/
@@ -202,6 +299,25 @@ block_component +directive hidethis where
     let _ ← contents.mapM goB
     pure {{<div id={{id}}> </div>}}
   cssFiles := #[]
+  jsFiles := #[]
+
+block_component +directive lightboxImage (src alt width : String) where
+  toHtml id _json _goI _goB _contents := do
+    let toggleId := s!"{id}-toggle"
+    pure {{
+      <figure class="lightbox-image" style={{s!"--lightbox-thumb-width: {width};"}}>
+        <input id={{toggleId}} class="lightbox-toggle" type="checkbox" />
+        <label class="lightbox-thumb" for={{toggleId}} aria-label={{s!"Open enlarged image: {alt}"}}>
+          <img src={{src}} alt={{alt}} loading="lazy" />
+        </label>
+        <figcaption class="lightbox-caption">"Click image to enlarge."</figcaption>
+        <label class="lightbox-overlay" for={{toggleId}} aria-label="Close enlarged image">
+          <span class="lightbox-close" aria-hidden="true">"×"</span>
+          <img src={{src}} alt={{alt}} />
+        </label>
+      </figure>
+    }}
+  cssFiles := #[("lightbox-image.css", lightboxImageCss)]
   jsFiles := #[]
 
 open Verso.Output

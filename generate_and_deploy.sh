@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 lake exe generate-blog
-cd site
+cd _site
 git init
 git add -A
 git commit -m "deploy"

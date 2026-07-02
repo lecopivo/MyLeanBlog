@@ -1,23 +1,108 @@
-
-nav.top ol {
-  display: flex;
-  flex-wrap: wrap; /* Wrap to new lines on small screens */
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  gap: 3rem;
-  font-size: 3rem;
+:root {
+  --text: #333;
+  --muted: rgba(0, 0, 0, 0.6);
+  --link: #777;
+  --border: rgba(0, 0, 0, 0.18);
+  --soft: #f8f9fa;
+  --verso-text-font-family: "Helvetica Neue", "Segoe UI", "Roboto", Arial, sans-serif;
+  --verso-structure-font-family: "Helvetica Neue", "Segoe UI", "Roboto", Arial, sans-serif;
 }
 
-@media (max-width: 600px) {
-  nav.top ol {
-    flex-direction: column; /* Stack vertically on mobile */
-  }
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: #fff;
+  font-family: "Helvetica Neue", "Segoe UI", "Roboto", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--soft);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: "Alata", Helvetica, Arial, sans-serif;
+}
+
+.inner-wrap,
+.wrap {
+  width: min(720px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.nav-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.5rem;
+}
+
+.navbar-brand {
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
+.navbar-brand:hover {
+  text-decoration: none;
+}
+
+.light {
+  font-weight: 400;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.site-nav a {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+main {
+  padding: 1.5rem 0 3rem;
+}
+
+article h1,
+main h1 {
+  margin: 1.25rem 0 1rem;
+  color: #111;
+  font-size: 2.25rem;
+  line-height: 1.15;
+}
+
+main h2 {
+  margin-top: 2rem;
+  color: #111;
+}
+
+p {
+  color: var(--text);
 }
 
 .hl.lean.block {
   margin-top: 0;
   margin-bottom: 2.5rem;
+  overflow-x: auto;
 }
 
 .post-list {
@@ -28,18 +113,30 @@ nav.top ol {
 
 .post-list > li {
   display: block;
-  border: 1px solid #aaa;
-  border-radius: .5rem;
-  padding: 1.5rem;
-  margin: 2rem 0;
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 0;
+  margin: 0;
 }
 
 .post-list > li .title {
-  font-weight: bold;
-  font-size: 120%;
+  display: block;
+  color: #111;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
 }
 
-.read-more { display: none; }
+.post-list > li > p {
+  margin: 0.75rem 0 0;
+  color: var(--text);
+}
+
+.read-more {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--link);
+  font-size: 0.95rem;
+}
 
 .post-list > li .read-more::after {
   content: " »";
@@ -92,24 +189,24 @@ nav.top ol {
 
 .date {
   display: inline;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .date:not(:empty)::before {
   content: "Posted ";
 }
 
-header h1 {
-  font-size: 1.5em;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-main h1 {
-  font-size: 3em;
+.metadata {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 
 nav.breadcrumbs {
-  font-size: 2rem;
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 nav.breadcrumbs ol {
@@ -126,7 +223,28 @@ nav.breadcrumbs ol li, nav.breadcrumbs ol li a {
 }
 
 nav.breadcrumbs ol li:not(:last-child)::after {
-  content: " » ";
+  content: " / ";
 }
 
-todo: breadcrumb, make page title smaller/color, can't see links, put posts in boxes
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+pre,
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (max-width: 600px) {
+  .nav-wrap {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 0.75rem 0;
+  }
+
+  article h1,
+  main h1 {
+    font-size: 1.8rem;
+  }
+}
