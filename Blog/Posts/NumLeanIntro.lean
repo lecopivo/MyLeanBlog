@@ -33,7 +33,7 @@ instance : LawfulDataRealModelOps ℝ where
   completeSpace := inferInstance
   decEq := inferInstance
   reHom x := x
-  imHom x := 0
+  imHom _ := 0
 
 private noncomputable
 instance : LawfulRealModelOps ℝ := omitted
@@ -86,7 +86,7 @@ There are two main workflows I want NumLean to support.
 open NumLean
 set_option checkBinderAnnotations false
 ```
-NumLean is about working with multidimansional arrays which are represented as the type {lean'}`Tensor`, with conforortable notation such as `Float^[256,256,3]` for a tensor of floats with dimensions `256×256×3`. We can write a literal tensor with
+NumLean is about working with multidimensional arrays, represented by the type {lean'}`Tensor`, with convenient notation such as `Float^[256,256,3]` for a tensor of floats with dimensions `256×256×3`. We can write tensor literals with
 ```lean'
 #check ⊞[1.0, 2.0, 3.0]
 #check ⊞[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]
@@ -94,30 +94,30 @@ NumLean is about working with multidimansional arrays which are represented as t
 #check ⊞ (i j : Fin 10) =>
   ⊞ (k l : Fin 5) => if i = j ∧ k = l then 1.0 else 0
 ```
-Access its elements
+Access their elements
 ```lean'
 #check ⊞[1.0, 2.0, 3.0][1]
 #check ⊞[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]][0,2]
 #check ⊞[[[1.0, 2], [3,4]], [[5,6],[7,8]]][0,1,1]
 ```
-Take its slices
+Take slices
 ```lean'
 #check ⊞[1.0, 2.0, 3.0][1:2]&
 #check ⊞[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]][:,:-1]&
 ```
-Reshape them
+Reshape tensors
 ```lean'
 #check ⊞[1.0, 2, 3, 4].reshape h(2,2)
 ```
-Multiply them
+Multiply tensors
 ```lean'
 #check ⊞[[1.0, 2], [3, 4]] *ᵥ ⊞[10.0, 100.0]
 ```
-And other operations one would expectec from a library with multidimensional arrays. I wrote a [Quickstart for NumPy users](https://lecopivo.github.io/NumLeanManual/Quickstart-for-NumPy-Users/#quickstart) to give you a quick glimpse into the computational part of the library.
+And use the other operations one would expect from a library for multidimensional arrays. I wrote a [Quickstart for NumPy users](https://lecopivo.github.io/NumLeanManual/Quickstart-for-NumPy-Users/#quickstart) to give you a quick glimpse into the computational side of the library.
 
 ## Reasoning About Arrays
 
-The core novelty of the library is that array representation is efficient *and* allows formal reasoning at the same time. For numerical software we really need to reason about the programs in its real-value semantics and in tis finite arithmetics semantics as well. For this purpose we need to write programs parametrize by the type `R` for the real numbers. Therefore we usually start by introducing this type with
+The core novelty of the library is that its array representation is efficient *and* supports formal reasoning at the same time. For numerical software, we need to reason about programs both in their real-valued semantics and in their finite-arithmetic semantics. For this purpose, we write programs parameterized by the type `R` of real numbers. Therefore we usually start by introducing this type with
 
 ```lean'
 variable {R : Type} {Rs : Nat -> Type} [RealModelOps R Rs]
@@ -126,7 +126,7 @@ variable {R : Type} {Rs : Nat -> Type} [RealModelOps R Rs]
 variable {m n : Nat}
 ```
 
-Where the class {lean'}`RealModelOps` says that {lean'}`R` provides the operations we expect from a model of the real numbers, and that {lean'}`Rs n` behaves like an array of {lean'}`n` values of type {lean'}`R`. We parameterize over the array type as well because Lean's standard containers, such as {lean'}`List`, {lean'}`Array`, and {lean'}`Vector`, are not enough for high-performance numerical computing.
+Here the class {lean'}`RealModelOps` says that {lean'}`R` provides the operations we expect from a model of the real numbers, and that {lean'}`Rs n` behaves like an array of {lean'}`n` values of type {lean'}`R`. We parameterize over the array type as well because Lean's standard containers, such as {lean'}`List`, {lean'}`Array`, and {lean'}`Vector`, are not enough for high-performance numerical computing.
 
 In executable code, one might instantiate {lean'}`R = Float64` and {lean'}`Rs = Float64Vector`. In proofs, one might instantiate {lean'}`R = ℝ` and {lean'}`Rs n = EuclideanSpace ℝ (Fin n)`. The same program can therefore have both an executable interpretation and a mathematical interpretation.
 
@@ -142,8 +142,7 @@ def reflect (normal x : R^[n]) : R^[n] :=
     x - (2 * (normal.dot x)) • normal
 ```
 
-Now when we want to prove program real-value properties about `reflect` we need to assume {lean'}`LawfulRealModel` which is effectivelly {lean'}`Prop` valued class stating that all the operations behave as for real numberes:
-
+We can either prove it properties directly for real numbers:
 ```lean'
 theorem cont (normal : ℝ^[n]) :
     Continuous (fun (x : ℝ^[n]) => reflect normal x) := by
@@ -151,14 +150,14 @@ theorem cont (normal : ℝ^[n]) :
   sorry -- fun_prop
 ```
 
-Or we can introduce instance of {lean'}`LawfulRealModel` is effectivelly a {lean'}`Prop` valued class containing all the laws of all the operations.
+Or together with {lean'}`RealModelOps` we can assume {lean'}`LawfulRealModel`, which is effectively a {lean'}`Prop`-valued class stating that all the operations behave as they should for real numbers:
 ```lean'
 theorem lin [LawfulRealModel R] (normal : R^[n]) :
     IsLinearMap R (fun (x : R^[n]) => reflect normal x) :=by
   sorry
 ```
 
-To convince you even more I should show that
+To make this more concrete, NumLean should also provide equivalences such as
 ```lean'
 variable [LawfulRealModel R]
 
@@ -182,12 +181,12 @@ theorem euclidean_equiv
 variable {X I} {Ks K nX nI} [VectorType Ks K] [HasDefaultFlatRepr X Ks nX] [IndexType I nI]
 ```
 
-To summarize, the main contribution of NumLean is that it offers you the type {lean'}`Tensor X I` with efficient vector, matrix and tensor operations and provable equivalence to `EuclidenSpace X I` which is linear isomorphism for `X` inner product space and `I` finite type.
+To summarize, the main contribution of NumLean is the type {lean'}`Tensor X I`, with efficient vector, matrix, and tensor operations and a provable equivalence to `EuclideanSpace X I`. This equivalence is a linear isomorphism when `X` is an inner product space and `I` is a finite type.
 
-Regarding reasoning in finite arithmetics, there is not much yet. There is a definition if {lean'}`DyadicInterval` using Lean's new {lean'}`Dyadic` numbers and instance of `Interval.LawfulRingOps` which is saying that the ring operations, {lean'}`RingOps DyadicInterval`, are lawful with respect to the ring operations on reals, {lean'}`Ring ℝ`. However, I'm not sure if this is a worthwhile direction as there are other Lean project doing interval arithmetics and it would be best to make sure that both libraries can easily cooperate.
+Regarding reasoning about finite arithmetic, there is not much yet. There is a definition of {lean'}`DyadicInterval` using Lean's new {lean'}`Dyadic` numbers, together with an instance of `Interval.LawfulRingOps` saying that the ring operations, {lean'}`RingOps DyadicInterval`, are lawful with respect to the ring operations on reals, {lean'}`Ring ℝ`. However, I'm not sure whether this is the right direction. There are other Lean projects working on interval arithmetic, and it would be best to make sure the libraries can cooperate easily.
 
 # Moving forward
 
-What is next for NumLean. There are still many things missing. Many natural theorems are missing. There needs to lots of work done on performance. Support for Float32, Complex32, Complex64 scalar types. Provide fast implementation using BLAS and continue working on [OpenCL backend](https://github.com/lecopivo/NumLeanOpenCL). Improved reasoning about ranges/for loops such as splitting, reordering. Improve slices workflow, add misssing many theorems about them.
+What is next for NumLean? There are still many things missing: natural theorems, performance work, support for Float32, Complex32, and Complex64 scalar types, fast implementations using BLAS, continued work on the [OpenCL backend](https://github.com/lecopivo/NumLeanOpenCL), better reasoning about ranges and for loops, and a better workflow and theorem library for slices.
 
-With introduction of NumLean, I would like to also reastart effort on building SciLean from ground up. I have renamed my wild experiment to SciLeanLegacy and would like to start a clean version, fully verified and as a community effort. At the first order of approximation NumLean and SciLean are just ports of NumPy and SciPy to Lean but verified. But this is really reductive view and would not be overly interesting thing to do in my opinion. I believe, It can be much more and change a way how we write numerical software. I have written as second accompaniong blog post where I sketch out my vision for SciLean and why I'm excited about it. So if you are interested give it a read and if you find it compeling then join the effort!
+With the introduction of NumLean, I would also like to restart the effort to build SciLean from the ground up. I have renamed my earlier wild experiment to SciLeanLegacy, and I would like to start a clean, fully verified version as a community effort. To a first approximation, NumLean and SciLean are verified ports of NumPy and SciPy to Lean. But this is a reductive view, and in my opinion it would not be very interesting on its own. I believe they can be much more and can change how we write numerical software. I have written a second accompanying blog post where I sketch my vision for SciLean and explain why I am excited about it. If you are interested, give it a read, and if you find it compelling, join the effort!
